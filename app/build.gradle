@@ -1,0 +1,38 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+
+    defaultConfig {
+        applicationId "com.learn.heddy.biggerbetter"
+        minSdkVersion 21
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        free {
+            applicationId "com.learn.heddy.biggerbetter.free"
+        }
+        paid {
+            applicationId "com.learn.heddy.biggerbetter.paid"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    freeCompile 'com.google.android.gms:play-services-ads:9.6.1'
+    compile project(path: ':jokeactivity')
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile project(path: ':backend', configuration: 'android-endpoints')
+}
