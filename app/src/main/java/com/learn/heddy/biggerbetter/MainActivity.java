@@ -39,8 +39,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-//
-//    public void tellJoke(View view) {
-//        Toast.makeText(this, R.string.joke, Toast.LENGTH_SHORT).show();
-//    }
 }

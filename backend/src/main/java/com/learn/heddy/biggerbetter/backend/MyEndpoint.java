@@ -11,6 +11,8 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.learn.heddy.jokesmith.JokeSmith;
 
+import java.util.ArrayList;
+
 import javax.inject.Named;
 
 /** An endpoint class we are exposing */
@@ -34,9 +36,8 @@ public class MyEndpoint {
         return response;
     }
 
-
-    @ApiMethod(name="fetchJokes")
-    public MyBean fetchJokes(@Named("flavor") String flavor){
+    @ApiMethod(name="fetchOneJoke")
+    public MyBean fetchOneJoke(@Named("flavor") String flavor){
         String jokedJokes;
 
         MyBean response = new MyBean();
@@ -46,7 +47,19 @@ public class MyEndpoint {
         } else {
             jokedJokes = JokeSmith.staticTellJokeFromSmith();
         }
-        response.setData("Jokes, " + jokedJokes);
+        response.setData("One joke: " + jokedJokes);
+
+        return response;
+    }
+
+    @ApiMethod(name="fetchJokes")
+    public MyBean fetchJokes(){
+        ArrayList<String> jokedJokes;
+
+        MyBean response = new MyBean();
+        JokeSmith smith = new JokeSmith();
+        jokedJokes = smith.tellManyJokesFromSmith();
+        response.setMyListData(jokedJokes);
 
         return response;
     }

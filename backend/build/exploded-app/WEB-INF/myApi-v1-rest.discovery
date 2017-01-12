@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"ODRTh3xaRR64wpeXJSlF33HMN-0/4DDJs-mJkssLV6_FkhzstEKOotY\"",
+ "etag": "\"ODRTh3xaRR64wpeXJSlF33HMN-0/eEqM5VSaIgE3sQ2Ani1s2Dbs32s\"",
  "discoveryVersion": "v1",
  "id": "myApi:v1",
  "name": "myApi",
@@ -79,6 +79,12 @@
    "properties": {
     "data": {
      "type": "string"
+    },
+    "myListData": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
     }
    }
   }
@@ -86,7 +92,18 @@
  "methods": {
   "fetchJokes": {
    "id": "myApi.fetchJokes",
-   "path": "fetchJokes/{flavor}",
+   "path": "fetchJokes",
+   "httpMethod": "POST",
+   "response": {
+    "$ref": "MyBean"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "fetchOneJoke": {
+   "id": "myApi.fetchOneJoke",
+   "path": "fetchOneJoke/{flavor}",
    "httpMethod": "POST",
    "parameters": {
     "flavor": {

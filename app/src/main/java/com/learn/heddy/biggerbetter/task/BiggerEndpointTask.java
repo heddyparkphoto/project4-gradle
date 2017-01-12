@@ -12,34 +12,36 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.learn.heddy.biggerbetter.backend.myApi.MyApi;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by hyeryungpark on 1/10/17.
  */
-public class BiggerEndpointTask extends AsyncTask<Pair<Context, String>, Void, String> {
+public class BiggerEndpointTask extends AsyncTask<Pair<Context, String>, Void, ArrayList<String>> {
 
     private static MyApi serviceApi = null;
     private Context context;
 
     @Override
-    protected String doInBackground(Pair<Context, String>... pairs) {
+    protected ArrayList<String> doInBackground(Pair<Context, String>... pairs) {
 
         Pair inParam = pairs[0];
         this.context = (Context)inParam.first;
         String flavor = (String)inParam.second;
+        ArrayList<String> jokesList;
 
         // Do this just once
-        if (serviceApi == null){
+        if (serviceApi == null) {
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
-            new AndroidJsonFactory(), null)
-            // options for running against local devappserver
-            // - 10.0.2.2 is localhost's IP address in Android emulator
-            // - turn off compression when running against local devappserver
-            .setRootUrl("http://10.0.2.2:8080/_ah/api/")
-            .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                @Override
-                public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                        abstractGoogleClientRequest.setDisableGZipContent(true);
+                new AndroidJsonFactory(), null)
+                // options for running against local devappserver
+                // - 10.0.2.2 is localhost's IP address in Android emulator
+                // - turn off compression when running against local devappserver
+                .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+                .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                    @Override
+                    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                            abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
             });
             // end options for devappserver
@@ -48,13 +50,17 @@ public class BiggerEndpointTask extends AsyncTask<Pair<Context, String>, Void, S
         }
 
         try {
-
-                return serviceApi.fetchJokes(flavor).execute().getData();
-
+            jokesList = (ArrayList<String>)serviceApi.fetchJokes().execute().getMyListData();
+            if ("free".equalsIgnoreCase(flavor)){
+                ArrayList<String> oneVersion = new ArrayList<String>();
+                oneVersion.add(jokesList.get(0));
+                return oneVersion;
+            } else {
+                return jokesList;
+            }
         } catch (IOException e) {
-            Log.v("EndPoints", ""+e);
+            Log.v("BiggerEndPointTasks ", "" + e);
             return null;
         }
     }
-
 }

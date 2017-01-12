@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">JokeActivity</string>
-    <string name="joke_from_android">No joke from string value xml</string>
+    <string name="joke_from_android">Jokes, folks!</string>
 </resources>

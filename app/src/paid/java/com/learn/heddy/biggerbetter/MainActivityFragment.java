@@ -14,6 +14,8 @@ import android.widget.Button;
 import com.learn.heddy.biggerbetter.task.BiggerEndpointTask;
 import com.learn.heddy.jokeactivity.JokeActivity;
 
+import java.util.ArrayList;
+
 /**
  * Created by hyeryungpark on 1/10/17.
  */
@@ -32,18 +34,17 @@ public class MainActivityFragment extends Fragment {
         jokeB = (Button)root.findViewById(R.id.getJokeButton);
 
         jokeB.setOnClickListener(new View.OnClickListener(){
+
             @Override
             public void onClick(View view) {
 
-                Log.d(LOG_TAG, "Button clicked from Paid!");
-
-                String tempPaidJoke = handleGetJokes();
-                if (tempPaidJoke!=null && tempPaidJoke.length() > 0) {
-                    Intent intent = new Intent(getActivity(), JokeActivity.class);
-                    intent.putExtra(Intent.EXTRA_TEXT, tempPaidJoke);
-                    startActivity(intent);
+                ArrayList<String> jokesToSend = handleGetJokes();
+                if (jokesToSend!=null && !jokesToSend.isEmpty()) {
+                Intent intent = new Intent(getActivity(), JokeActivity.class);
+                intent.putStringArrayListExtra("MANY_JOKES_EXTRA", jokesToSend);
+                startActivity(intent);
                 } else {
-                    Log.e(LOG_TAG, "Problem: No jokes!!");
+                    Log.e(LOG_TAG, "Paid version... Problem: No jokes!!");
                 }
             }
         });
@@ -51,9 +52,9 @@ public class MainActivityFragment extends Fragment {
     }
 
 
-    private String handleGetJokes(){
+    private ArrayList<String> handleGetJokes(){
 
-        String returnJoke = null;
+        ArrayList<String> jokesList = new ArrayList<String>();
         BiggerEndpointTask myservice;
         String flavor = "paid";
 
@@ -61,15 +62,14 @@ public class MainActivityFragment extends Fragment {
             myservice = (BiggerEndpointTask) new BiggerEndpointTask().execute(
                     new Pair<Context, String>(getActivity(), flavor));
             if (myservice==null) {
-                Log.d(LOG_TAG, "Service is still null");
+                Log.d(LOG_TAG, "PAID: Service is still null");
             } else {
-                returnJoke = myservice.get();
-                Log.d(LOG_TAG, "Service OK ");
+                jokesList = myservice.get();
             }
         } catch(Exception e){
-            Log.e(LOG_TAG, "E from backend service "+ e);
+            Log.e(LOG_TAG, "PAID: Problem from backend service "+ e);
         } finally {
-            return returnJoke;
+            return jokesList;
         }
     }
 }

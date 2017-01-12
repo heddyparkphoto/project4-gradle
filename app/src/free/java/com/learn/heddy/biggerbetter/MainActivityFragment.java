@@ -11,10 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.learn.heddy.biggerbetter.task.BiggerEndpointTask;
 import com.learn.heddy.jokeactivity.JokeActivity;
+
+import java.util.ArrayList;
 
 /**
  * Created by hyeryungpark on 1/10/17.
@@ -23,6 +27,9 @@ public class MainActivityFragment extends Fragment {
 
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     Context context;
+
+    // interstitial ad variable
+    InterstitialAd mInterstitialAd;
 
     public MainActivityFragment() {
         context = getActivity();
@@ -33,6 +40,7 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // Banner style ad
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
         // Create an ad request. Check logcat output for the hashed device ID to
         // get test ads on a physical device. e.g.
@@ -42,22 +50,33 @@ public class MainActivityFragment extends Fragment {
                 .build();
         mAdView.loadAd(adRequest);
 
+        // interstitial ad uses the network, so it is typically loaded even before it is
+        // needed.  The codes below does that.
+        mInterstitialAd = new InterstitialAd(getActivity());
+        String adUnitId = getActivity().getString(R.string.banner_ad_unit_id);
+        mInterstitialAd.setAdUnitId(adUnitId);
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                displayJokes();
+            }
+        });
+        // invoke immediately once.
+        requestNewInterstitial();
+
+        // MainActivity
         Button jokeB = (Button)root.findViewById(R.id.getJokeButtonFree);
 
         jokeB.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
 
-                Log.d(LOG_TAG, "Button clicked from Free!");
-
-                String tempFreeJoke = handleGetJokes(); //context.getString(R.string.joke);
-
-                if (tempFreeJoke!=null && tempFreeJoke.length() > 0) {
-                    Intent intent = new Intent(getActivity(), JokeActivity.class);
-                    intent.putExtra(Intent.EXTRA_TEXT, tempFreeJoke);
-                    startActivity(intent);
+                if (mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
                 } else {
-                    Log.e(LOG_TAG, "Problem: No jokes!!");
+                    displayJokes();
                 }
             }
         });
@@ -65,25 +84,44 @@ public class MainActivityFragment extends Fragment {
         return root;
     }
 
-    private String handleGetJokes(){
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .build();
 
-        String returnJoke = null;
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+    private ArrayList<String> handleGetJokes(){
+
+        ArrayList<String> jokesList = new ArrayList<String>();
         BiggerEndpointTask myservice;
         String flavor = "free";
 
         try {
-            myservice = (BiggerEndpointTask) new BiggerEndpointTask().execute(
-                    new Pair<Context, String>(context, flavor));
+            myservice = (BiggerEndpointTask) new BiggerEndpointTask().execute(new Pair<Context, String>(context, flavor));
             if (myservice==null) {
-                Log.d(LOG_TAG, "Service is still null");
+                Log.d(LOG_TAG, "New Service is still null");
             } else {
-                returnJoke = myservice.get();
-                Log.d(LOG_TAG, "Service OK ");
+                jokesList = myservice.get();
             }
         } catch(Exception e){
-            Log.e(LOG_TAG, "E from backend service "+ e);
+            Log.e(LOG_TAG, "Problem from backend service "+ e);
         } finally {
-            return returnJoke;
+            return jokesList;
         }
     }
+
+    private void displayJokes(){
+
+        ArrayList<String> jokesToSend = handleGetJokes();
+        if (jokesToSend!=null && !jokesToSend.isEmpty()) {
+            Intent intent = new Intent(getActivity(), JokeActivity.class);
+            intent.putStringArrayListExtra("MANY_JOKES_EXTRA", jokesToSend);
+            startActivity(intent);
+        } else {
+            Log.e(LOG_TAG, "Problem: No jokes!!");
+        }
+    }
+
 }
