@@ -30,10 +30,28 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
     freeCompile 'com.google.android.gms:play-services-ads:9.6.1'
     compile project(path: ':jokeactivity')
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.google.android.gms:play-services-ads:9.6.1'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.2',
+            { exclude group: 'com.android.support', module: 'support-annotations'
+            })
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '2.0.1'
 }
+
+task runAppEngine(dependsOn: ":backend:appengineRun") {
+    project(":backend").afterEvaluate { backend ->
+        backend.extensions.appengine.daemon = true
+    }              
+    doLast {
+    println
+    "started the server!"
+  }
+}
+
+
+
+
