@@ -11,10 +11,17 @@ import java.util.ArrayList;
 
 /**
  * Created by hyeryungpark on 1/12/17.
+ *
+ * Junit3 style Testcase
+ */
+
+/*
+    Start the local dev server before test runs.
  */
 public class EndpointAsyncTest extends AndroidTestCase {
     private final String LOG_TAG = EndpointAsyncTest.class.getSimpleName();
 
+    // test "free"
     public void testOneJokeTeller() {
 
         ArrayList<String> jokesList;
@@ -34,24 +41,25 @@ public class EndpointAsyncTest extends AndroidTestCase {
             Log.e(LOG_TAG, "" + e);
         }
     }
-//
-//    public void testListOfJokesTeller() {
-//        ArrayList<String> jokesList;
-//
-//        Context context = mContext;
-//        Pair pair = new Pair(context, "paid");
-//        try {
-//            BiggerEndpointTask task = (BiggerEndpointTask) new BiggerEndpointTask().execute(pair);
-//            jokesList = task.get();
-//
-//            assertNotNull(task);
-//            assertNotNull(jokesList);
-//            assertTrue(jokesList.size() > 1);
-//            assertTrue(jokesList.get(0).length() > 0);
-//        } catch (Exception e) {
-//           // assertTrue(e instanceof ExecutionException || e instanceof InterruptedException);
-//            Log.e(LOG_TAG, "" + e);
-//        }
-//    }
+
+    // test "paid"
+    public void testListOfJokesTeller() {
+        ArrayList<String> jokesList;
+
+        Context context = mContext;
+        Pair pair = new Pair(context, "paid");
+        try {
+            BiggerEndpointTask task = (BiggerEndpointTask) new BiggerEndpointTask().execute(pair);
+            jokesList = task.get();
+
+            assertNotNull(task);
+            assertNotNull(jokesList);
+            assertTrue(jokesList.size() > 1);
+            assertTrue(jokesList.get(0).length() > 0);
+        } catch (Exception e) {
+           // assertTrue(e instanceof ExecutionException || e instanceof InterruptedException);
+            Log.e(LOG_TAG, "" + e);
+        }
+    }
 
 }

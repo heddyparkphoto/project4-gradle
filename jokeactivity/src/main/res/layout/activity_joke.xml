@@ -16,7 +16,7 @@
         android:paddingEnd="@dimen/medium_padding"
         android:layout_marginBottom="@dimen/topic_space"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:text="@string/joke_from_android"
         />
 

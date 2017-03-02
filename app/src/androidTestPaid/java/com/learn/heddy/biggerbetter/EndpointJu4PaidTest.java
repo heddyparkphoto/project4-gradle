@@ -18,7 +18,9 @@ import static junit.framework.Assert.*;
 /**
  * Created by hyeryungpark on 1/12/17.
  */
-
+/*
+    Start the local dev server before test runs.
+ */
 @RunWith(AndroidJUnit4.class)
 public class EndpointJu4PaidTest {
 

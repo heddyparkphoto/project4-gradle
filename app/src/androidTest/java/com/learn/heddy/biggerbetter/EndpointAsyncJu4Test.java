@@ -19,6 +19,10 @@ import static junit.framework.Assert.*;
  * Created by hyeryungpark on 1/12/17.
  */
 
+/*
+    Start the local dev server before test runs.
+ */
+
 @RunWith(AndroidJUnit4.class)
 public class EndpointAsyncJu4Test {
 
@@ -39,9 +43,6 @@ public class EndpointAsyncJu4Test {
             BiggerEndpointTask task = (BiggerEndpointTask) new BiggerEndpointTask().execute(pair);
             jokesList = task.get();
 
-            /*
-                How to get the Activity context in junit 4
-             */
             assertNotNull(task);
             assertNotNull(jokesList);
             assertEquals(1, jokesList.size());

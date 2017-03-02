@@ -11,6 +11,11 @@ import java.util.ArrayList;
 
 /**
  * Created by hyeryungpark on 1/12/17.
+ *
+ * Junit 3 style test
+ */
+/*
+    Start the local dev server before test runs.
  */
 public class EndpointPaidTest extends AndroidTestCase {
     private final String LOG_TAG = EndpointPaidTest.class.getSimpleName();

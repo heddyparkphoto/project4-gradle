@@ -20,6 +20,10 @@ import static junit.framework.Assert.assertTrue;
 /**
  * Created by hyeryungpark on 3/2/17.
  */
+
+/*
+    Start the local dev server before test runs.
+ */
 @RunWith(AndroidJUnit4.class)
 public class EndpointFreeTest {
     private final String LOG_TAG = EndpointFreeTest.class.getSimpleName();
