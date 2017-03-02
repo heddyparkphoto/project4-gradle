@@ -7,9 +7,11 @@ import android.view.MenuItem;
 
 /**
  * Created by hyeryungpark on 1/10/17.
+ *
+ * Container Activity; main activities are located in the Fragment classes in free and paid codes.
+ *
  */
 public class MainActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

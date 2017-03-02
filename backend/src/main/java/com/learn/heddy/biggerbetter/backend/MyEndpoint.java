@@ -36,22 +36,7 @@ public class MyEndpoint {
         return response;
     }
 
-    @ApiMethod(name="fetchOneJoke")
-    public MyBean fetchOneJoke(@Named("flavor") String flavor){
-        String jokedJokes;
-
-        MyBean response = new MyBean();
-        JokeSmith smith = new JokeSmith();
-        if (flavor.equalsIgnoreCase("free")) {
-            jokedJokes = smith.tellJokeFromSmith();
-        } else {
-            jokedJokes = JokeSmith.staticTellJokeFromSmith();
-        }
-        response.setData("One joke: " + jokedJokes);
-
-        return response;
-    }
-
+    /** Main endpoint method that fetches and sets the jokes on the respond for the app's request */
     @ApiMethod(name="fetchJokes")
     public MyBean fetchJokes(){
         ArrayList<String> jokedJokes;

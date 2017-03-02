@@ -14,6 +14,9 @@
         android:paddingRight="@dimen/medium_padding"
         android:paddingStart="@dimen/medium_padding"
         android:paddingEnd="@dimen/medium_padding"
+        android:layout_marginBottom="@dimen/topic_space"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
         android:text="@string/joke_from_android"
         />
 
@@ -21,7 +24,6 @@
         android:id="@+id/listview_jokes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         />
 
 </LinearLayout>

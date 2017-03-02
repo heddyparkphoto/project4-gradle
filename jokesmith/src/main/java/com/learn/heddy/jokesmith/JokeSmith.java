@@ -12,6 +12,10 @@ public class JokeSmith {
     private static Properties props;
     private static String JOKES_FILE = "jokes.properties";
 
+    /*
+        Constructor instantiate the static props.  Upon successful reading of the resource file,
+        jokes are loaded.
+     */
     public JokeSmith(){
         props = new Properties();
         try {
@@ -19,14 +23,6 @@ public class JokeSmith {
         } catch (Exception e){
             System.out.println("Exception loading jokes file! " + e);
         }
-    }
-
-    public String tellJokeFromSmith(){
-        return props.getProperty("cheesy", "defaultCheesy joke");
-    }
-
-    public static String staticTellJokeFromSmith(){
-        return "STATIC METHOD: Smith is ONE SINGLE joker.  Funny, funny man!";
     }
 
     public ArrayList<String> tellManyJokesFromSmith(){

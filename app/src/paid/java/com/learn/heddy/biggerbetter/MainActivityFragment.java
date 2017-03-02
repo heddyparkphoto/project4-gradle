@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 /**
  * Created by hyeryungpark on 1/10/17.
+ *
+ *  Paid content for the app.
+ *
  */
 public class MainActivityFragment extends Fragment {
 
@@ -41,17 +44,19 @@ public class MainActivityFragment extends Fragment {
                 ArrayList<String> jokesToSend = handleGetJokes();
                 if (jokesToSend!=null && !jokesToSend.isEmpty()) {
                 Intent intent = new Intent(getActivity(), JokeActivity.class);
-                intent.putStringArrayListExtra("MANY_JOKES_EXTRA", jokesToSend);
+                intent.putStringArrayListExtra(JokeActivity.MANY_JOKES_EXTRA, jokesToSend);
                 startActivity(intent);
                 } else {
-                    Log.e(LOG_TAG, "Paid version... Problem: No jokes!!");
+                    Log.e(LOG_TAG, "Problem: No jokes to display!!");
                 }
             }
         });
         return root;
     }
 
-
+    /*
+        Invoke AsyncTask passing in the "paid" flavor to receive the corresponding jokes.
+     */
     private ArrayList<String> handleGetJokes(){
 
         ArrayList<String> jokesList = new ArrayList<String>();
@@ -62,12 +67,12 @@ public class MainActivityFragment extends Fragment {
             myservice = (BiggerEndpointTask) new BiggerEndpointTask().execute(
                     new Pair<Context, String>(getActivity(), flavor));
             if (myservice==null) {
-                Log.d(LOG_TAG, "PAID: Service is still null");
+                Log.w(LOG_TAG, "BiggerEndpointTask is still null");
             } else {
                 jokesList = myservice.get();
             }
         } catch(Exception e){
-            Log.e(LOG_TAG, "PAID: Problem from backend service "+ e);
+            Log.e(LOG_TAG, "Problem from BiggerEndpointTask "+ e);
         } finally {
             return jokesList;
         }

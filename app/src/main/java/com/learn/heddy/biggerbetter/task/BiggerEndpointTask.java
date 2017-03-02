@@ -16,12 +16,21 @@ import java.util.ArrayList;
 
 /**
  * Created by hyeryungpark on 1/10/17.
- */
+ *
+ * Adapted from the Lesson link sample code
+ * It requests the GCE backend Api called MyApi and its method to deliver the list of jokes
+ * to the calling methods.
+ *
+ * */
 public class BiggerEndpointTask extends AsyncTask<Pair<Context, String>, Void, ArrayList<String>> {
 
     private static MyApi serviceApi = null;
     private Context context;
 
+    /*
+        The calling method sends whether this is a "free" or "paid" Build on the 2nd argument.
+        ArrayList of one joke is returned if "free" vs. a full list of jokes if not (or "paid").
+     */
     @Override
     protected ArrayList<String> doInBackground(Pair<Context, String>... pairs) {
 
@@ -59,7 +68,7 @@ public class BiggerEndpointTask extends AsyncTask<Pair<Context, String>, Void, A
                 return jokesList;
             }
         } catch (IOException e) {
-            Log.v("BiggerEndPointTasks ", "" + e);
+            Log.e("BiggerEndPointTasks ", "" + e);
             return null;
         }
     }

@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 /* Lesson video sdk 1.7 is the latest sdk that supports multi-module Gradle at this time */
-sourceCompatibility = 1.7
+sourceCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

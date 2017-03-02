@@ -22,6 +22,12 @@ import java.util.ArrayList;
 
 /**
  * Created by hyeryungpark on 1/10/17.
+ *
+ * Used sample codes to implement InterstitialAd provided in the Lesson link.
+ *
+ * Free content for the app.
+ * Utilize the AdMob library Test interface from Google Play Service.
+ *
  */
 public class MainActivityFragment extends Fragment {
 
@@ -69,6 +75,9 @@ public class MainActivityFragment extends Fragment {
         // MainActivity
         Button jokeB = (Button)root.findViewById(R.id.getJokeButtonFree);
 
+        /*
+            Listener alternates displaying a joke and showing one Ad between each click.
+         */
         jokeB.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -93,6 +102,9 @@ public class MainActivityFragment extends Fragment {
         mInterstitialAd.loadAd(adRequest);
     }
 
+    /*
+        Invoke AsyncTask passing in the "free" flavor to receive the corresponding jokes.
+     */
     private ArrayList<String> handleGetJokes(){
 
         ArrayList<String> jokesList = new ArrayList<String>();
@@ -102,12 +114,12 @@ public class MainActivityFragment extends Fragment {
         try {
             myservice = (BiggerEndpointTask) new BiggerEndpointTask().execute(new Pair<Context, String>(context, flavor));
             if (myservice==null) {
-                Log.d(LOG_TAG, "New Service is still null");
+                Log.w(LOG_TAG, "BiggerEndpointTask is still null");
             } else {
                 jokesList = myservice.get();
             }
         } catch(Exception e){
-            Log.e(LOG_TAG, "Problem from backend service "+ e);
+            Log.e(LOG_TAG, "Problem from BiggerEndpointTask "+ e);
         } finally {
             return jokesList;
         }
@@ -118,10 +130,10 @@ public class MainActivityFragment extends Fragment {
         ArrayList<String> jokesToSend = handleGetJokes();
         if (jokesToSend!=null && !jokesToSend.isEmpty()) {
             Intent intent = new Intent(getActivity(), JokeActivity.class);
-            intent.putStringArrayListExtra("MANY_JOKES_EXTRA", jokesToSend);
+            intent.putStringArrayListExtra(JokeActivity.MANY_JOKES_EXTRA, jokesToSend);
             startActivity(intent);
         } else {
-            Log.e(LOG_TAG, "Problem: No jokes!!");
+            Log.e(LOG_TAG, "Problem: No jokes to display!!");
         }
     }
 
