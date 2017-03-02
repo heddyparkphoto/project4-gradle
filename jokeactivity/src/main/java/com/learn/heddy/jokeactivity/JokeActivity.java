@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,7 +33,12 @@ public class JokeActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.listview_jokes);
 
         mDisplayAdapter = new DisplayAdapter(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(mDisplayAdapter);
 
         Intent intent = getIntent();
